@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
+#include "Player.h"
 
 sf::Vector2f normalize(sf::Vector2f vector) {
 	float magnitude = std::sqrt((vector.x * vector.x) + (vector.y * vector.y));
@@ -25,44 +26,24 @@ int main() {
 	std::vector<sf::RectangleShape >bullet;
 	float bulletspeed = 1.0f;
 
-	int Xindex = 0;
-	int Yindex = 0;
+	Player player;
 
-	sf::Texture playerheadleather;
-	if (!playerheadleather.loadFromFile("assets/player/textures/playerheadleather.png")) {
-		std::cout << "player head faild to load" << std::endl;
-
-	}
-	sf::Sprite playersheadleatherprite(playerheadleather);
-	playersheadleatherprite.setTextureRect(sf::IntRect({ {Xindex * 64, Yindex * 64} , {64, 64} }));
-
-
-	sf::Texture playertexture;
-
-	if (!playertexture.loadFromFile("assets/player/textures/playerspritesheet.png")) {
+	player.Initilize();
+	player.Load();
+	
+	int EXindex = 0;
+	int EYindex = 0;
+	sf::Texture Etexture;
+	if (!Etexture.loadFromFile("assets/player/textures/playerspritesheet.png")) {
 		std::cout << "player faild to load" << std::endl;
 	}
 	std::cout << "loading player" << std::endl;
-	sf::Sprite playersprite(playertexture);
-	playersprite.setTextureRect(sf::IntRect({ {Xindex * 64, Yindex * 64} , {64, 64} }));
-
-	if (!playertexture.loadFromFile("assets/player/textures/playerspritesheet.png")) {
-		std::cout << "player faild to load" << std::endl;
-	}
-	std::cout << "loading player" << std::endl;
-	sf::Sprite enemysprite(playertexture);
-	enemysprite.setTextureRect(sf::IntRect({ {Xindex * 64, Yindex * 64} , {64, 64} }));
+	sf::Sprite enemysprite(Etexture);
+	enemysprite.setTextureRect(sf::IntRect({ {EXindex * 64, EYindex * 64} , {64, 64} }));
 	enemysprite.setPosition(sf::Vector2f(100, 100));
 
 
 	
-
-
-
-
-
-
-
 
 
 
@@ -85,8 +66,7 @@ int main() {
 		{
 			bullet.push_back(sf::RectangleShape(sf::Vector2f(25,10)));
 			int i = bullet.size() - 1;
-			bullet[i].setPosition(playersprite.getPosition());
-
+			bullet[i].setPosition(player.sprite.getPosition());
 
 
 		//	//sf::Vector2i cursorposition = sf::Mouse::getPosition(window);
@@ -102,26 +82,13 @@ int main() {
 			bullet[i].setPosition(bullet[i].getPosition() + bulletdirection * bulletspeed);
 
 		}
+		
+		
+		player.Update();
 
 
 
-		sf::Vector2f PrePOsition = playersprite.getPosition();
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
-			playersprite.setPosition(PrePOsition + sf::Vector2f(1, 0));
-			playersheadleatherprite.setPosition(PrePOsition + sf::Vector2f(1, 0));
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
-			playersprite.setPosition(PrePOsition - sf::Vector2f(1, 0));
-			playersheadleatherprite.setPosition(PrePOsition - sf::Vector2f(1, 0));
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-			playersprite.setPosition(PrePOsition - sf::Vector2f(0, 1));
-			playersheadleatherprite.setPosition(PrePOsition - sf::Vector2f(0, 1));
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
-			playersprite.setPosition(PrePOsition + sf::Vector2f(0, 1));
-			playersheadleatherprite.setPosition(PrePOsition + sf::Vector2f(0, 1));
-		}
+		
 
 
 
@@ -135,9 +102,8 @@ int main() {
 		}
 
 		window.draw(enemysprite);
-		window.draw(playersprite);
-		window.draw(playersheadleatherprite);
-
+		window.draw(player.sprite);
+		window.draw(player.HLsprite);
 		window.display();
 	};
 
