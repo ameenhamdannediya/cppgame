@@ -2,6 +2,9 @@
 #include <SFML/Graphics.hpp>
 
 
+
+
+
 class Player
 {
 private:
@@ -10,14 +13,17 @@ private:
 
 
 
+	std::optional<sf::Sprite> Psprite;
+	std::optional<sf::Sprite> HLsprite;
 	
 public:
-	sf::Sprite sprite;
-	sf::Sprite HLsprite;
-	void Initilize();
-	void Load();
+	Player();
+	//void Initilize();
+	//void Load();
 	void Update();
-	void Draw();
+	void Draw(sf::RenderWindow& window);
+	sf::Vector2f getPosition() const;
+	
 
 };
 

@@ -28,8 +28,8 @@ int main() {
 
 	Player player;
 
-	player.Initilize();
-	player.Load();
+	//player.Initilize();
+	//player.Load();
 	
 	int EXindex = 0;
 	int EYindex = 0;
@@ -66,7 +66,7 @@ int main() {
 		{
 			bullet.push_back(sf::RectangleShape(sf::Vector2f(25,10)));
 			int i = bullet.size() - 1;
-			bullet[i].setPosition(player.sprite.getPosition());
+			bullet[i].setPosition(player.getPosition());
 
 
 		//	//sf::Vector2i cursorposition = sf::Mouse::getPosition(window);
@@ -102,8 +102,12 @@ int main() {
 		}
 
 		window.draw(enemysprite);
-		window.draw(player.sprite);
-		window.draw(player.HLsprite);
+
+		//window.draw(player.sprite);
+		//window.draw(player.HLsprite);
+		
+		player.Draw(window);
+
 		window.display();
 	};
 

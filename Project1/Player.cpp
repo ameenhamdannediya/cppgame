@@ -1,57 +1,76 @@
 #include "Player.h"
 #include <iostream>
 
-void Player::Initilize()
+
+
+
+
+Player::Player()
 {
+    int Xindex = 0;
+    int Yindex = 0;
+
+    // Load body texture
+    if (!texture.loadFromFile("assets/player/textures/playerspritesheet.png"))
+        std::cout << "player failed to load\n";
+
+    // CREATE sprite INSIDE optional
+    Psprite.emplace(texture);
+    Psprite->setTextureRect(sf::IntRect({ Xindex * 64, Yindex * 64 }, { 64, 64 }));
+    Psprite->setPosition({ 400.f, 300.f }); // start position
+
+    // Load head texture
+    if (!headleather.loadFromFile("assets/player/textures/playerheadleather.png"))
+        std::cout << "player head failed to load\n";
+
+    // CREATE head sprite INSIDE optional
+    HLsprite.emplace(headleather);
+    HLsprite->setTextureRect(sf::IntRect({ Xindex * 64, Yindex * 64 }, { 64, 64 }));
+    HLsprite->setPosition(Psprite->getPosition());
 }
 
-void Player::Load()
-{
-	int Xindex = 0;	
-	int Yindex = 0;
-	if (!headleather.loadFromFile("assets/player/textures/playerheadleather.png")) {
-		std::cout << "player head faild to load" << std::endl;
-
-	}
-	sf::Sprite HLsprite(headleather);
-	HLsprite.setTextureRect(sf::IntRect({{Xindex * 64, Yindex * 64} , {64, 64}}));
 
 
-	if (!texture.loadFromFile("assets/player/textures/playerspritesheet.png")) {
-		std::cout << "player faild to load" << std::endl;
-	}
-	std::cout << "loading player" << std::endl;
-	sf::Sprite sprite(texture);
-	sprite.setTextureRect(sf::IntRect({ {Xindex * 64, Yindex * 64} , {64, 64} }));
 
-}
+
+
+
+//void Player::Initilize()
+//{
+//}
+//
+//void Player::Load()
+//{
+//}
 
 void Player::Update()
 {
+	if (!Psprite || !HLsprite) return;
+
+	sf::Vector2f pos = Psprite->getPosition();
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) pos.x += 1;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) pos.x -= 1;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) pos.y -= 1;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) pos.y += 1;
+
+	Psprite->setPosition(pos);
+	HLsprite->setPosition(pos);
+}
+
+
+
 	
 
 
-	sf::Vector2f PrePOsition = sprite.getPosition();
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
-		sprite.setPosition(PrePOsition + sf::Vector2f(1, 0));
-		HLsprite.setPosition(PrePOsition + sf::Vector2f(1, 0));
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
-		sprite.setPosition(PrePOsition - sf::Vector2f(1, 0));
-		HLsprite.setPosition(PrePOsition - sf::Vector2f(1, 0));
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-		sprite.setPosition(PrePOsition - sf::Vector2f(0, 1));
-		HLsprite.setPosition(PrePOsition - sf::Vector2f(0, 1));
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
-		sprite.setPosition(PrePOsition + sf::Vector2f(0, 1));
-		HLsprite.setPosition(PrePOsition + sf::Vector2f(0, 1));
-	}
-
-
+void Player::Draw(sf::RenderWindow& window)
+{
+	if (Psprite)   window.draw(*Psprite);
+	if (HLsprite) window.draw(*HLsprite);
 }
 
-void Player::Draw()
+
+sf::Vector2f Player::getPosition() const
 {
+	return Psprite ? Psprite->getPosition() : sf::Vector2f{};
 }
