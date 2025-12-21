@@ -8,6 +8,7 @@ private:
 	sf::Texture Etexture;
 
 	std::optional<sf::Sprite> Esprite;
+	
 
 
 
