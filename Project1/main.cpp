@@ -3,6 +3,7 @@
 #include <vector>
 #include <math.h>
 #include "Player.h"
+#include "Enemy.h"
 
 sf::Vector2f normalize(sf::Vector2f vector) {
 	float magnitude = std::sqrt((vector.x * vector.x) + (vector.y * vector.y));
@@ -27,27 +28,12 @@ int main() {
 	float bulletspeed = 1.0f;
 
 	Player player;
+	Enemy enemy;
 
 	//player.Initilize();
 	//player.Load();
 	
-	int EXindex = 0;
-	int EYindex = 0;
-	sf::Texture Etexture;
-	if (!Etexture.loadFromFile("assets/player/textures/playerspritesheet.png")) {
-		std::cout << "player faild to load" << std::endl;
-	}
-	std::cout << "loading player" << std::endl;
-	sf::Sprite enemysprite(Etexture);
-	enemysprite.setTextureRect(sf::IntRect({ {EXindex * 64, EYindex * 64} , {64, 64} }));
-	enemysprite.setPosition(sf::Vector2f(100, 100));
-
-
 	
-
-
-
-
 
 
 
@@ -77,7 +63,7 @@ int main() {
 		}
 		for (size_t i = 0; i < bullet.size(); i++)
 		{
-			bulletdirection = enemysprite.getPosition() - bullet[i].getPosition();
+			bulletdirection = enemy.getPosition() - bullet[i].getPosition();
 			bulletdirection = normalize(bulletdirection);
 			bullet[i].setPosition(bullet[i].getPosition() + bulletdirection * bulletspeed);
 
@@ -101,11 +87,11 @@ int main() {
 
 		}
 
-		window.draw(enemysprite);
 
 		//window.draw(player.sprite);
 		//window.draw(player.HLsprite);
 		
+		enemy.Draw(window);
 		player.Draw(window);
 
 		window.display();
