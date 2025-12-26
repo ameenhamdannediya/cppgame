@@ -7,14 +7,15 @@ class Enemy
 private:
 	sf::Texture Etexture;
 
-	std::optional<sf::Sprite> Esprite;
 	
-
+	sf::RectangleShape boundingrect;
+	sf::Vector2i Esize;
 
 
 public:
+	std::optional<sf::Sprite> Esprite;
 	Enemy();
-	void Update();
+	void Update(float deltatime);
 	void Draw(sf::RenderWindow& window);
 	sf::Vector2f getPosition() const;
 

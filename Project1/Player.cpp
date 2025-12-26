@@ -8,6 +8,10 @@
 
 Player::Player()
 {
+	Psize = sf::Vector2i(64,64);
+
+	
+	
     int Xindex = 0;
     int Yindex = 0;
 
@@ -17,17 +21,26 @@ Player::Player()
 
     // CREATE sprite INSIDE optional
     Psprite.emplace(texture);
-    Psprite->setTextureRect(sf::IntRect({ Xindex * 64, Yindex * 64 }, { 64, 64 }));
+	Psprite->scale(sf::Vector2f(1,1));
+    Psprite->setTextureRect(sf::IntRect({ Xindex * Psize.x , Yindex * Psize.y}, { Psize.x, Psize.y }));
     Psprite->setPosition({ 400.f, 300.f }); // start position
 
-    // Load head texture
+    // Load head texture 
     if (!headleather.loadFromFile("assets/player/textures/playerheadleather.png"))
         std::cout << "player head failed to load\n";
 
     // CREATE head sprite INSIDE optional
     HLsprite.emplace(headleather);
-    HLsprite->setTextureRect(sf::IntRect({ Xindex * 64, Yindex * 64 }, { 64, 64 }));
+    HLsprite->setTextureRect(sf::IntRect({ Xindex * Psize.x, Yindex * Psize.y }, { Psize.x, Psize.y }));
     HLsprite->setPosition(Psprite->getPosition());
+
+
+
+	boundingrect.setOutlineColor(sf::Color::Red);
+	boundingrect.setFillColor(sf::Color::Transparent);
+	boundingrect.setSize(sf::Vector2f(Psize.x * Psprite->getScale().x, Psize.y* Psprite->getScale().y));
+	boundingrect.setOutlineThickness(1);
+
 }
 
 
@@ -44,19 +57,19 @@ Player::Player()
 //{
 //}
 
-void Player::Update(Enemy& enemy)
+void Player::Update(Enemy& enemy, float deltatime)
 {
 	if (!Psprite || !HLsprite) return;
 
 	sf::Vector2f pos = Psprite->getPosition();
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) pos.x += 1;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) pos.x -= 1;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) pos.y -= 1;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) pos.y += 1;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) pos.x += 1 * playerspeed * deltatime;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) pos.x -= 1 * playerspeed * deltatime;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) pos.y -= 1 * playerspeed * deltatime;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) pos.y += 1 * playerspeed * deltatime;
 
-	Psprite->setPosition(pos);
-	HLsprite->setPosition(pos);
+	Psprite->setPosition(pos );
+	HLsprite->setPosition(pos );
 
 	sf::Vector2f bulletdirection;
 
@@ -77,9 +90,17 @@ void Player::Update(Enemy& enemy)
 	{
 		bulletdirection = enemy.getPosition() - bullet[i].getPosition();
 		bulletdirection = Math::normalize(bulletdirection);
-		bullet[i].setPosition(bullet[i].getPosition() + bulletdirection * bulletspeed);
+		bullet[i].setPosition(bullet[i].getPosition() + bulletdirection * bulletspeed * deltatime);
 
 	}
+
+	boundingrect.setPosition(Psprite->getPosition());
+	if (Math::Isrectcollision(Psprite->getGlobalBounds(), enemy.Esprite->getGlobalBounds())) {
+		printf("asdw");
+	
+	
+	};
+	
 
 
 }
@@ -93,6 +114,7 @@ void Player::Draw(sf::RenderWindow& window)
 {
 	if (Psprite)   window.draw(*Psprite);
 	if (HLsprite) window.draw(*HLsprite);
+	window.draw(boundingrect);
 	for (size_t i = 0; i < bullet.size(); i++)
 	{
 		window.draw(bullet[i]);
