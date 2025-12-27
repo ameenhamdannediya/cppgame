@@ -10,7 +10,7 @@ sf::Vector2f Math::normalize(sf::Vector2f vector) {
 	return normalised;
 }
 
-bool Math::Isrectcollision(sf::FloatRect rect1, sf::FloatRect rect2)
+bool Math::IsCollision(sf::FloatRect rect1, sf::FloatRect rect2)
 {
 	
 	if (rect1.position.x + rect1.size.x > rect2.position.x &&

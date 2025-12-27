@@ -1,9 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Enemy.h"
-
-
-
+#include "Bullet.h"
 
 
 
@@ -12,9 +10,11 @@ class Player
 private:
 	sf::Texture headleather;
 	sf::Texture texture;
-	std::vector<sf::RectangleShape >bullet;
-	float bulletspeed = 1.0f;
-	float playerspeed = 1.0f;
+	std::vector<Bullet>bullet;
+
+	float maxFireRate;
+	float fireRateTimer;
+	float playerspeed;
 
 	sf::RectangleShape boundingrect;
 	sf::Vector2i Psize;
@@ -25,12 +25,12 @@ private:
 	
 public:
 	Player();
+	void Update(Enemy& enemy, float deltatime, sf::Vector2f cursorposition);
+	void Draw(sf::RenderWindow& window);
+
 	//void Initilize();
 	//void Load();
-
-	void Update(Enemy& enemy, float deltatime);
-	void Draw(sf::RenderWindow& window);
-	sf::Vector2f getPosition() const;
+	//sf::Vector2f getPosition() const;
 	
 
 };

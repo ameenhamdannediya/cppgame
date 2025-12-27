@@ -6,7 +6,7 @@
 
 
 
-Player::Player()
+Player::Player() : playerspeed (1.0f) , fireRateTimer(0) , maxFireRate(100)
 {
 	Psize = sf::Vector2i(64,64);
 
@@ -57,7 +57,7 @@ Player::Player()
 //{
 //}
 
-void Player::Update(Enemy& enemy, float deltatime)
+void Player::Update(Enemy& enemy, float deltatime, sf::Vector2f cursorposition)
 {
 	if (!Psprite || !HLsprite) return;
 
@@ -71,32 +71,48 @@ void Player::Update(Enemy& enemy, float deltatime)
 	Psprite->setPosition(pos );
 	HLsprite->setPosition(pos );
 
+
+	//bullet
+	fireRateTimer += deltatime;
 	sf::Vector2f bulletdirection;
 
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && fireRateTimer >= maxFireRate)
 	{
-		bullet.push_back(sf::RectangleShape(sf::Vector2f(25, 10)));
+		bullet.push_back(Bullet());
 		int i = bullet.size() - 1;
-		bullet[i].setPosition(Psprite->getPosition());
+		bullet[i].Initialize(Psprite->getPosition(), cursorposition, 1.0f);
 
+		//bullet[i].setPosition(Psprite->getPosition());
+		fireRateTimer = 0;
 
-		//	//sf::Vector2i cursorposition = sf::Mouse::getPosition(window);
-		//	//sf::Vector2f worldPos = window.mapPixelToCoords(cursorposition);
 		//	//sf::Vector2f bulletdirection = worldPos - bullet.getPosition();
 		//	//bullet.setPosition(bullet.getPosition() + bulletdirection* bulletspeed);
 
 	}
 	for (size_t i = 0; i < bullet.size(); i++)
 	{
-		bulletdirection = enemy.getPosition() - bullet[i].getPosition();
-		bulletdirection = Math::normalize(bulletdirection);
-		bullet[i].setPosition(bullet[i].getPosition() + bulletdirection * bulletspeed * deltatime);
+		
+		//bulletdirection = cursorposition - bullet[i].getPosition();
+		//bulletdirection = Math::normalize(bulletdirection);
+		//bullet[i].setPosition(bullet[i].getPosition() + bulletdirection * bulletspeed * deltatime);
 
+		bullet[i].Update(deltatime);
+		if (enemy.health > 0) {
+
+			if (Math::IsCollision(bullet[i].GetGlobalBounds(), enemy.Esprite->getGlobalBounds())) {
+
+				bullet.erase(bullet.begin() + i);
+				enemy.changeHealth(-5);
+
+
+
+			}
+		}
 	}
 
 	boundingrect.setPosition(Psprite->getPosition());
-	if (Math::Isrectcollision(Psprite->getGlobalBounds(), enemy.Esprite->getGlobalBounds())) {
-		printf("asdw");
+	if (Math::IsCollision(Psprite->getGlobalBounds(), enemy.Esprite->getGlobalBounds())) {
+		printf("colided");
 	
 	
 	};
@@ -117,13 +133,13 @@ void Player::Draw(sf::RenderWindow& window)
 	window.draw(boundingrect);
 	for (size_t i = 0; i < bullet.size(); i++)
 	{
-		window.draw(bullet[i]);
+		bullet[i].Draw(window);
 
 	}
 }
 
 
-sf::Vector2f Player::getPosition() const
-{
-	return Psprite ? Psprite->getPosition() : sf::Vector2f{};
-}
+//sf::Vector2f Player::getPosition() const
+//{
+//	return Psprite ? Psprite->getPosition() : sf::Vector2f{};
+//}

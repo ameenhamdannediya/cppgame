@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Player.h"
 #include "Enemy.h"
+#include "Framerate.h"
 
 
 
@@ -16,19 +17,24 @@ int main() {
 	window.setKeyRepeatEnabled(false);
 	window.setFramerateLimit(250);
 
+
+	// loaded and initialised 
 	Player player;
 	Enemy enemy;
+	Framerate framerate;
 
-	//player.Initilize();
-	//player.Load();
+
 
 
 	sf::Clock clock;
 
 	while (window.isOpen()) {
-	sf::Time deltatimer = clock.restart();
-	float deltatime = deltatimer.asMilliseconds();	
 
+		sf::Time deltatimer = clock.restart();
+		float deltatime = deltatimer.asMilliseconds();
+
+
+		//std::cout <<  << std::endl;
 		while (std::optional event = window.pollEvent()) {
 
 			if (event->is < sf::Event::Closed>())
@@ -36,8 +42,13 @@ int main() {
 
 		}
 
+		sf::Vector2f cursorposition = sf::Vector2f(sf::Mouse::getPosition(window));
+
+
+
 		enemy.Update(deltatime);
-		player.Update(enemy, deltatime);
+		player.Update(enemy, deltatime, cursorposition);
+		framerate.Update(deltatime, 22);
 
 
 
@@ -48,6 +59,7 @@ int main() {
 
 		enemy.Draw(window);
 		player.Draw(window);
+		framerate.Draw(window);
 
 		window.display();
 	};
