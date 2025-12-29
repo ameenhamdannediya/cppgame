@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Framerate.h"
+#include "Map.h"
 
 
 
@@ -22,9 +23,10 @@ int main() {
 	Player player;
 	Enemy enemy;
 	Framerate framerate;
+	Map map;
 
 
-
+	map.Load();
 
 	sf::Clock clock;
 
@@ -45,7 +47,7 @@ int main() {
 		sf::Vector2f cursorposition = sf::Vector2f(sf::Mouse::getPosition(window));
 
 
-
+		map.Update(deltatime);
 		enemy.Update(deltatime);
 		player.Update(enemy, deltatime, cursorposition);
 		framerate.Update(deltatime, 22);
@@ -57,6 +59,7 @@ int main() {
 
 		window.clear(sf::Color::Black);
 
+		map.Draw(window);
 		enemy.Draw(window);
 		player.Draw(window);
 		framerate.Draw(window);
