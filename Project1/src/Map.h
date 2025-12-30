@@ -1,6 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Tile.h"
+#include "MapLoader.h"
+#include "MapData.h"
+
 class Map
 {
 private:
@@ -9,20 +12,19 @@ private:
 
 	Tile* tiles;
 
-	int tileHeight;
-	int tileWidth;
+	MapLoader mapLoader;
+	MapData md;
+	
+
 	int totalTilesX;
 	int totalTilesY;
 	int totalTiles;
 
 
 
-	int mapNums[6] = {
-		1,3,5, 
-		12,13,30
-	};
 	
-	std::optional <sf::Sprite > map[6];
+	
+	std::optional<sf::Sprite>* map;
 public:
 	Map();
 	~Map();

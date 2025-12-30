@@ -4,6 +4,7 @@
 #include "Enemy.h"
 #include "Framerate.h"
 #include "Map.h"
+#include "MapLoader.h"
 
 
 
@@ -26,7 +27,8 @@ int main() {
 	Map map;
 
 
-	map.Load();
+
+	map.Load("assets/WorldMap/level/level1.rmap");
 
 	sf::Clock clock;
 

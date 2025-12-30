@@ -1,0 +1,11 @@
+[Map]
+tilesheet=C:/Users/coolguy/source/repos/Project1/Project1/assets/WorldMap/prison/tilesheet.png
+name=Level 1
+tileWidth=16
+tileHeight=16
+NumofRows=5
+NumofColomn=4
+scaleX=4
+scaleY=4
+dataSize=20
+data=121,121,122,144,145,146,123,125,129,130,377,12,2,22,232,100,101,102,150,160
