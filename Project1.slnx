@@ -3,5 +3,6 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
+  <Project Path="MapEditor/MapEditor.vcxproj" Id="ed0b6f64-8786-40d3-961a-2a0a93a321c0" />
   <Project Path="Project1/Project1.vcxproj" Id="7b0d74d5-c0b1-47a7-bfbe-1fcb7623dd60" />
 </Solution>

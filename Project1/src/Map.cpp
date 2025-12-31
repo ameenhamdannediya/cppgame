@@ -16,10 +16,10 @@ void Map::Initialize()
 {
 }
 
-void Map::Load()
+void Map::Load(std::string filename)
 {
 	
-	mapLoader.Load("assets/WorldMap/level/level1.rmap", md);
+	mapLoader.Load(filename, md);
 
 	map = new std::optional<sf::Sprite>[md.dataSize];
 
