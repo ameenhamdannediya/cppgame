@@ -5,9 +5,6 @@
 #include "MouseTile.h"
 
 
-void r(int z) {
-	std::cout << "callack" << z << std::endl;
-}
 
 
 int main() {
@@ -39,14 +36,16 @@ int main() {
 		TOffset 
 
 		);
-
+	Map map(mouseTile);
 
 
 	grid.Initialize();
 	mouseTile.Initialize();
+	map.Initialize();
 	// loaded and initialised 
 	grid.Load();
 	mouseTile.Load();
+	map.Load();
 
 
 
@@ -69,9 +68,11 @@ int main() {
 		}
 
 		sf::Vector2f cursorposition = sf::Vector2f(sf::Mouse::getPosition(window));
-		grid.Update(deltatime);
 
-		mouseTile.Update(deltatime, cursorposition, &r);
+		mouseTile.Update(deltatime, cursorposition);
+
+		grid.Update(deltatime);
+		map.Update(deltatime, cursorposition);
 
 	
 
@@ -82,6 +83,7 @@ int main() {
 		window.clear(sf::Color::Black);
 		grid.Draw(window);
 		mouseTile.Draw(window);
+		map.Draw(window);
 
 		window.display();
 	};

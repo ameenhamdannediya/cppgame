@@ -1,13 +1,17 @@
 #include "MouseTile.h"
 #include <iostream>
+#define thisIsOut
 
 void foobar(int x, void(*onGridClick(int)))
 {
 	onGridClick(x);
 }
 
-MouseTile::MouseTile(const sf::Vector2i& size, const sf::Vector2i& scale, const sf::Vector2f& offset)
-				: tileSize(size) , tilescale(scale) , tileOffset(offset)
+MouseTile::MouseTile(const sf::Vector2i& size, 
+	const sf::Vector2i& scale, 
+	const sf::Vector2f& offset)
+	: tileSize(size) , tilescale(scale) , tileOffset(offset), 
+	isMouseOnGrid(false)
 {
 
 }
@@ -28,26 +32,33 @@ void MouseTile::Load()
 	tile->setTextureRect(sf::IntRect({ tileSize.x *11, 0 }, { tileSize }));
 	tile->setScale(sf::Vector2f(tilescale));
 }
-
-void MouseTile::Update(float deltatime, sf::Vector2f cursorposition, void (*onGridClick)(int) )
+void MouseTile::Update(float deltatime, const  sf::Vector2f& cursorposition)
 {
-	int gridX = (cursorposition.x - tileOffset.x) / (tileSize.x * tilescale.x);
-	int x = gridX * (tileSize.x * tilescale.x) + tileOffset.x;
-	int gridY = (cursorposition.y - tileOffset.y) / (tileSize.y * tilescale.y);
-	int y = gridY * (tileSize.y * tilescale.y) + tileOffset.y;
-	tile->setPosition(sf::Vector2f(x, y));
+	M_tileGridPosition.x = (cursorposition.x - tileOffset.x) / (tileSize.x * tilescale.x);///tile id 
+	M_tilePosition.x = M_tileGridPosition.x * (tileSize.x * tilescale.x) + tileOffset.x;
+	M_tileGridPosition.y = (cursorposition.y - tileOffset.y) / (tileSize.y * tilescale.y);
+	M_tilePosition.y = M_tileGridPosition.y * (tileSize.y * tilescale.y) + tileOffset.y;
 
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
-		int gridIndex = gridX + gridY * 15;
-		std::cout << gridIndex << std::endl;
-		onGridClick(gridIndex);
-		
-	}
+	tile->setPosition(M_tilePosition);
 }
 
 void MouseTile::Draw(sf::RenderWindow& window)
 {
 	window.draw(*tile);
+}
+
+bool MouseTile::isMOuseClickOnTile(thisIsOut sf::Vector2f& tilePosition, const  sf::Vector2f& cursorposition) const {
+	bool isOnGrid = true;
+
+		
+
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)&& isOnGrid) {
+
+		tilePosition = M_tilePosition;
+		return true;
+
+	}
+	return false;
 }
 
 

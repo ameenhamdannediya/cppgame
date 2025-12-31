@@ -3,7 +3,7 @@
 
 
 
-Map::Map(const MouseTile& mousetile) : M_mousetile(mousetile	)
+Map::Map( MouseTile& mousetile) : M_mousetile(mousetile) , mapSprites(nullptr)
 {
 
 }
@@ -21,19 +21,21 @@ void Map::Load()
 {
 
 }
-void Map::Update(float deltatime)
+void Map::Update(float deltatime, const  sf::Vector2f& cursorposition)
 {
-
+	sf::Vector2f TPosition;
+	if (M_mousetile.isMOuseClickOnTile(TPosition, cursorposition)) {
+		std::cout << TPosition.x << std::endl;
+		std::cout << TPosition.y << std::endl;
+	}
 }
 
 void Map::Draw(sf::RenderWindow& window) 
 {
 	for (int i = 0; i < mapsize; i++)
 	{
-		window.draw(*mapSprites[i]);
+		if(mapSprites[i]) window.draw(*mapSprites[i]);
 	}
 }
 
-void Map::grid(int x)
-{
-}
+
