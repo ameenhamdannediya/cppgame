@@ -30,5 +30,7 @@ public:
 	void Load();
 	void Update(float deltatime);
 	void Draw(sf::RenderWindow& window);
+
+	inline const sf::Vector2i& GetTotalCells() const { return totalCells; }
 };
 

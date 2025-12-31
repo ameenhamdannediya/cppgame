@@ -1,15 +1,21 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "MouseTile.h"
-#define mapsize 50
+#include "Grid.h"
+//#define mapsize 150
 class Map
 {
 private:
-	MouseTile& M_mousetile;
+	 MouseTile& M_mousetile;
+	const Grid& M_Grid ;
+
+	int MapSize;
+
 	std::optional <sf::Sprite>* mapSprites;
+	std::vector<sf::Sprite> map;
 
 public:
-	Map( MouseTile& mousetile);
+	Map(const Grid& grid,   MouseTile& mousetile);
 	~Map();
 
 	void Initialize();

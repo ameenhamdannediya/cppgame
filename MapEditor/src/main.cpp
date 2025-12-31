@@ -25,7 +25,7 @@ int main() {
 	Grid grid(
 		TSize,
 		TOffset , 
-		sf::Vector2i(15,8), //grid
+		sf::Vector2i(15,10), //grid
 		TScale,
 		sf::Color(255, 0, 0, 255), 
 		2 //thickness
@@ -36,7 +36,7 @@ int main() {
 		TOffset 
 
 		);
-	Map map(mouseTile);
+	Map map(grid, mouseTile);
 
 
 	grid.Initialize();
