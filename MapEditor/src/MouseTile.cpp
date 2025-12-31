@@ -1,7 +1,13 @@
 #include "MouseTile.h"
+#include <iostream>
 
-MouseTile::MouseTile(const sf::Vector2i& size, const sf::Vector2f& scale) 
-				: tileSize(size) , tilescale(scale) 
+void foobar(int x, void(*onGridClick(int)))
+{
+	onGridClick(x);
+}
+
+MouseTile::MouseTile(const sf::Vector2i& size, const sf::Vector2i& scale, const sf::Vector2f& offset)
+				: tileSize(size) , tilescale(scale) , tileOffset(offset)
 {
 
 }
@@ -23,11 +29,20 @@ void MouseTile::Load()
 	tile->setScale(sf::Vector2f(tilescale));
 }
 
-void MouseTile::Update(float deltatime, sf::Vector2f cursorposition)
+void MouseTile::Update(float deltatime, sf::Vector2f cursorposition, void (*onGridClick)(int) )
 {
-	int x = (int)(cursorposition.x / (tileSize.x * tilescale.x)) * (tileSize.x * tilescale.x);
-	int y = (int)(cursorposition.y / (tileSize.y * tilescale.y)) * (tileSize.y * tilescale.y);
+	int gridX = (cursorposition.x - tileOffset.x) / (tileSize.x * tilescale.x);
+	int x = gridX * (tileSize.x * tilescale.x) + tileOffset.x;
+	int gridY = (cursorposition.y - tileOffset.y) / (tileSize.y * tilescale.y);
+	int y = gridY * (tileSize.y * tilescale.y) + tileOffset.y;
 	tile->setPosition(sf::Vector2f(x, y));
+
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+		int gridIndex = gridX + gridY * 15;
+		std::cout << gridIndex << std::endl;
+		onGridClick(gridIndex);
+		
+	}
 }
 
 void MouseTile::Draw(sf::RenderWindow& window)

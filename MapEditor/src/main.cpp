@@ -1,10 +1,13 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Grid.h"
+#include "Map.h"
 #include "MouseTile.h"
 
 
-
+void r(int z) {
+	std::cout << "callack" << z << std::endl;
+}
 
 
 int main() {
@@ -18,15 +21,23 @@ int main() {
 	window.setKeyRepeatEnabled(false);
 	window.setFramerateLimit(250);
 
-	Grid grid(sf::Vector2i(16, 16) ,
-			sf::Vector2f(0, 0) ,
-			sf::Vector2i(15,8), 
-			sf::Vector2i(4,4),  
-			sf::Color(255, 0, 0, 255), 
-			2 
+	sf::Vector2i TSize = sf::Vector2i(16, 16);
+	sf::Vector2f TOffset = sf::Vector2f(0, 0);
+	sf::Vector2i TScale = sf::Vector2i(4, 4);
+
+	Grid grid(
+		TSize,
+		TOffset , 
+		sf::Vector2i(15,8), //grid
+		TScale,
+		sf::Color(255, 0, 0, 255), 
+		2 //thickness
 		);
-	MouseTile mouseTile(sf::Vector2i(16,16),
-						sf::Vector2f(4,4)
+	MouseTile mouseTile(
+		TSize,
+		TScale,
+		TOffset 
+
 		);
 
 
@@ -59,7 +70,8 @@ int main() {
 
 		sf::Vector2f cursorposition = sf::Vector2f(sf::Mouse::getPosition(window));
 		grid.Update(deltatime);
-		mouseTile.Update(deltatime, cursorposition);
+
+		mouseTile.Update(deltatime, cursorposition, &r);
 
 	
 
