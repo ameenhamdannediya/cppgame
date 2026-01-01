@@ -3,10 +3,11 @@
 #include "Grid.h"
 #include "Map.h"
 #include "MouseTile.h"
+#include "GUI/Button.h"
 
 
 
-
+using namespace GUI;
 int main() {
 
 
@@ -19,7 +20,7 @@ int main() {
 	window.setFramerateLimit(250);
 
 	sf::Vector2i TSize = sf::Vector2i(16, 16);
-	sf::Vector2f TOffset = sf::Vector2f(0, 0);
+	sf::Vector2f TOffset = sf::Vector2f(200, 20);
 	sf::Vector2i TScale = sf::Vector2i(4, 4);
 
 	Grid grid(
@@ -30,22 +31,24 @@ int main() {
 		sf::Color(255, 0, 0, 255), 
 		2 //thickness
 		);
-	MouseTile mouseTile(
+	MouseTile mouseTile(grid,
 		TSize,
 		TScale,
 		TOffset 
 
 		);
 	Map map(grid, mouseTile);
-
+	Button button(sf::Vector2f(100,25), sf::Vector2f(3,3));
 
 	grid.Initialize();
 	mouseTile.Initialize();
 	map.Initialize();
+	button.Initialize();
 	// loaded and initialised 
 	grid.Load();
 	mouseTile.Load();
 	map.Load();
+	button.Load();
 
 
 
@@ -73,6 +76,11 @@ int main() {
 
 		grid.Update(deltatime);
 		map.Update(deltatime, cursorposition);
+		button.Update(deltatime, cursorposition);
+
+		if (button.isPressed()) {
+			std::cout << "asdfwdasd" << std::endl;
+		}
 
 	
 
@@ -84,6 +92,7 @@ int main() {
 		grid.Draw(window);
 		mouseTile.Draw(window);
 		map.Draw(window);
+		button.Draw(window);
 
 		window.display();
 	};

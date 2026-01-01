@@ -14,6 +14,8 @@ private:
 	sf::Vector2f position;
 	sf::Vector2i totalLines;
 
+	sf::Vector2f M_size;
+
 	sf::Color gridColor;
 
 	int LineThickness ;
@@ -32,5 +34,8 @@ public:
 	void Draw(sf::RenderWindow& window);
 
 	inline const sf::Vector2i& GetTotalCells() const { return totalCells; }
+	inline const sf::Vector2f& GetPosition() const { return position; }
+	inline const sf::Vector2f& GetSize() const { return M_size; }
+
 };
 

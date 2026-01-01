@@ -1,24 +1,32 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Grid.h"
 
 class MouseTile
 {
 private:
+	const Grid& M_grid;
+
 	sf::Texture tilesheet;
 	std::optional<sf::Sprite> tile;
 
 	sf::Vector2f M_tilePosition;
 	sf::Vector2i M_tileGridPosition;
+
 	int Tnum;
+	float intputTime;
+
 
 	sf::Vector2i tileSize;
 	sf::Vector2f tilescale;
 	sf::Vector2f tileOffset;
 
 	bool isMouseOnGrid;
+
+	
 public:
 
-	MouseTile(const  sf::Vector2i& size,
+	MouseTile(const Grid& grid, const  sf::Vector2i& size,
 			const sf::Vector2i& scale, const sf::Vector2f& offset
 			);
 	~MouseTile();
@@ -34,7 +42,9 @@ public:
 	///<returns>bool</returns>
 	bool isMOuseClickOnTile( sf::Vector2f& tilePosition, sf::Vector2i& gridPosition,  const  sf::Vector2f& cursorposition) const;
 
-	inline const std::optional<sf::Sprite>&  GetTileSprite() const { return tile; }
+	inline const std::optional<sf::Sprite>& GetTileSprite() const { return tile; }
+
+	
 
 };
 

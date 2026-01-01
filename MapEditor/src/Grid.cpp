@@ -27,13 +27,12 @@ Grid::~Grid()
 
 void Grid::Initialize()
 {
+	M_size = sf::Vector2f(totalCells.x * cellSize.x * scale.x , totalCells.y * cellSize.y * scale.y);
 	
-	int horozontalLineLength = totalCells.x * cellSize.x* scale.x+ LineThickness;
-	int vecticalLineLength = totalCells.y * cellSize.y* scale.y;
 
 	for (int  i = 0; i < totalLines.y ; i++)
 	{
-		HLine[i].setSize(sf::Vector2f(horozontalLineLength, LineThickness));
+		HLine[i].setSize(sf::Vector2f(M_size.x + LineThickness, LineThickness));
 		HLine[i].setPosition(position + sf::Vector2f(0, cellSize.y*i* scale.y));
 		HLine[i].setFillColor(gridColor);
 
@@ -41,7 +40,7 @@ void Grid::Initialize()
 	}
 	for (int i = 0; i < totalLines.x; i++)
 	{
-		VLine[i].setSize(sf::Vector2f( LineThickness, vecticalLineLength));
+		VLine[i].setSize(sf::Vector2f( LineThickness, M_size.y));
 		VLine[i].setPosition(position + sf::Vector2f(cellSize.x* i* scale.x, 0));
 		VLine[i].setFillColor(gridColor);
 
